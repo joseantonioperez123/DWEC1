@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -euo pipefail
+
+RELEASE_PLAN=$(mktemp)
+trap 'rm -f "$RELEASE_PLAN"' EXIT
+
+npx changeset status --output="$RELEASE_PLAN"
+npx changeset version
+npm install --package-lock-only --ignore-scripts
+
+RELEASED_GEMS=$(jq -r '
+  .releases[]
+  | select(.type != "none")
+  | .name
+  | select(. == "octicons_gem" or . == "octicons_helper" or . == "jekyll-octicons")
+' "$RELEASE_PLAN")
+
+for package in $RELEASED_GEMS; do
+  case "$package" in
+    octicons_gem)
+      echo "Versioning Octicons ruby gem"
+      bundle exec rake -C lib/octicons_gem version
+      ;;
+    octicons_helper)
+      echo "Versioning Octicons rails helper gem"
+      bundle exec rake -C lib/octicons_helper version
+      ;;
+    jekyll-octicons)
+      echo "Versioning Octicons jekyll plugin gem"
+      bundle exec rake -C lib/octicons_jekyll version
+      ;;
+  esac
+done
+
+git add package.json package-lock.json lib/

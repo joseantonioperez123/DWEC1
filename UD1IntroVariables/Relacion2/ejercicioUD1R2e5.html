@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UD1 - Relación 2 - Ejercicio 5</title>
+</head>
+<body>
+    <h1>UD1 - Relación 2 (números iguales) - Ejercicio 5</h1>
+    <p>RECUERDA: mira la consola</p>
+    <p id="resultado"></p>
+</body>
+    <script>
+        let mensaje;
+        let x = prompt( "Introduce un número: ", 0 );
+        let y = prompt( "Introduce otro número: ", 0 );
+        if ( x > y ) {
+            mensaje = x + " es mayor que " + y;
+        }
+        else if ( x < y ) {
+            mensaje = y + " es mayor que " + x
+        }
+        else {
+            mensaje = "Los dos números son iguales";
+        }
+        alert("Vas a ver el resultado");
+        console.log(mensaje);
+        document.getElementById("resultado").innerHTML = mensaje;
+    </script>
+
+</html>

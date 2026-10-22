@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="hora"></div>
+    <div id="minutos"></div>
+    <div id="segundos"></div>
+    <script>
+    function actualizar() {
+        fecha=new Date();
+        document.getElementById("hora").innerHTML = fecha.getHours();
+        document.getElementById("minutos").innerHTML = fecha.getMinutes();
+        document.getElementById("segundos").innerHTML = fecha.getSeconds();
+        setTimeout(actualizar,1000);
+    }
+
+    actualizar();
+    </script>
+</body>
+</html>

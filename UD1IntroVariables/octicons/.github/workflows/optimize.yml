@@ -1,0 +1,84 @@
+on:
+  push:
+    paths:
+      - 'icons/**'
+      - '.github/workflows/optimize.yml'
+      - 'script/optimization-inputs.ts'
+      - 'icon-metadata.json'
+  pull_request:
+    paths:
+      - 'icons/**'
+      - '.github/workflows/optimize.yml'
+      - 'script/optimization-inputs.ts'
+      - 'icon-metadata.json'
+name: Optimize SVGs
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Get changed icons
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            FALLBACK_REF="${{ github.event.pull_request.base.ref }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+            FALLBACK_REF="${{ github.event.repository.default_branch }}"
+          fi
+          if ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin -- "$FALLBACK_REF"
+            BASE_SHA=$(git merge-base HEAD FETCH_HEAD)
+          fi
+          CHANGED=$(git diff --name-only --diff-filter=AMR "$BASE_SHA" HEAD -- 'icons/*.svg' 'icons/**/*.svg')
+          if [ -z "$CHANGED" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGED" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        if: steps.changed.outputs.has_changes == 'true'
+        with:
+          node-version-file: '.nvmrc'
+      - name: Select icons safe to optimize
+        id: optimizable
+        if: steps.changed.outputs.has_changes == 'true'
+        env:
+          CHANGED_ICONS: ${{ steps.changed.outputs.files }}
+        run: |
+          FILES=$(node script/optimization-inputs.ts)
+          if [ -z "$FILES" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "files<<EOF" >> "$GITHUB_OUTPUT"
+            echo "$FILES" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+      - run: npm ci
+        if: steps.optimizable.outputs.has_changes == 'true'
+      - name: Run svgo on changed icons
+        if: steps.optimizable.outputs.has_changes == 'true'
+        env:
+          SVG_FILES: ${{ steps.optimizable.outputs.files }}
+        run: |
+          while IFS= read -r icon; do
+            npx svgo --config svgo.config.mts "$icon"
+          done <<< "$SVG_FILES"
+
+      - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10.0.0
+        if: steps.optimizable.outputs.has_changes == 'true'
+        with:
+          add: 'icons'
+          message: 'Optimize SVGs'
+          author_email: actions@github.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

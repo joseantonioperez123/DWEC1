@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escala de cabeceras</title>
+</head>
+<body>
+    <script>
+        // crear 6 cabeceras en tamaño decreciente
+        for (let i=1; i<7; i++)
+            document.write("<h"+i+">Cabecera "+i+"</h"+i+">");
+
+        // mostrar elementos de un array
+        let frutas=["Manzana","PERA","naranja"]
+        document.write("<ol>");
+        for (let i=0; i<frutas.length; i++)
+            document.write("<li>"+frutas[i]);
+        document.write("</ol>");
+        // ¡Los bucles infinitos son malos!
+        /*while (true) {
+        console.log("¡Hola, mundo!");
+        }*/
+       // Mostrar array usando for in
+        document.write("<ul>");
+        for (let fruta of frutas)
+            document.write("<li>"+fruta);
+        document.write("</ul>");
+
+</script>
+</body>
+</html>

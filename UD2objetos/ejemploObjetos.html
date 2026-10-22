@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de teoría de objetos</title>
+</head>
+<body>
+    <script>
+ /*       function showProps(obj, objName) {
+            var result = ``;
+            for (var i in obj) {
+                // obj.hasOwnProperty() se usa para filtrar propiedades de la cadena de prototipos del objeto
+                if (obj.hasOwnProperty(i)) {
+                result += `${objName}.${i} = ${obj[i]}\n`;
+                }
+            }
+            return result;
+        }
+
+        var myCar = {
+            make: "Ford",
+            model: "Mustang",
+            year: 1969,
+        };
+        console.log("ANTES DE SHORPROPS");
+        
+        console.log(showProps(myCar,"myCar"));
+        console.log("DESPUES DE SHORPROPS");
+        // Se crean y asignan cuatro variables de una sola vez,
+// separadas por comas
+var myObj = new Object(),
+  cadena = "myString",
+  aleatorio = Math.random(),
+  obj = new Object();
+
+    myObj.tipo = "Sintaxis de puntos";
+    myObj["fecha de creación"] = "Cadena con espacios";
+    myObj[cadena] = "Valor de cadena";
+    myObj[aleatorio] = "Número aleatorio";
+    myObj[obj] = "Object";
+    myObj[""] = "Incluso una cadena vacía";
+
+    console.log(myObj);
+*/
+
+        const date = new Date("0001",8,14,11,30);
+
+        console.log(date.getDay());      // 1 (Lunes)
+        console.log(date.getDate());     // 13 
+        console.log(date.getMonth());    // 2 (Marzo)
+        console.log(date.getHours());    // 12
+        console.log(date.getMinutes());  // 40
+        console.log(date.getSeconds());  // 51
+        console.log(date.getFullYear()); // 2023
+        console.log(date.getTime());     // 1678722750962
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+plugins:
+  - rubocop-rails
+
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+
+Naming/FileName:
+  Enabled: false
+
+Style/OneClassPerFile:
+  Exclude:
+    - "lib/jekyll-octicons/version.rb"
+
+AllCops:
+  NewCops: enable
+
+Rails/RakeEnvironment:
+  Exclude:
+    - "Rakefile"

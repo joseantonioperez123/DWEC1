@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uso de bucles con "of" y con "in"</title>
+</head>
+<body>
+    <script>
+        // acceder a los nombres de atributos
+         let alumno = { nombre: "Gabi", estatura: 177 };
+         for ( let prop in alumno ) {
+            document.write(prop+" ");
+         }
+
+         // acceder a cada objeto y en cada uno al nombre de sus propiedades
+        let arboles = [ {nombre: "limonero", altura: 100}, 
+                        {nombre: "naranjo", altura: 150},
+                        {nombre: "cerezo", precio: 190},
+                        {precio: 76, plantacion: "primavera"}
+                    ];
+        for ( let arbol of arboles ) {
+            console.log(arbol);
+            for ( let prop in arbol )
+                console.log(prop+" ");
+        }
+    </script>
+</body>
+</html>

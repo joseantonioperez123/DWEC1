@@ -1,0 +1,22 @@
+*.gem
+*.log
+.DS_Store
+.bundle
+.env
+node_modules
+vendor
+Gemfile.lock
+
+# Ignore build/export artifacts
+lib/**/build/
+
+# Turbo
+.turbo
+
+# ESLint
+.eslintcache
+
+# Generated files
+**/generated/**
+**/__generated__/**
+**/dist/**

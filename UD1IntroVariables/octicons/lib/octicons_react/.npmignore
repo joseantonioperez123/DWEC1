@@ -1,0 +1,10 @@
+*.config.js
+.*.sw?
+.*rc
+.cache
+.eslint*
+.gitignore
+script
+src
+**/__tests__/**
+**/ts-tests/**

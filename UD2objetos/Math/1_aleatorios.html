@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function aleatorio (min,max) {
+            let n = Math.random();
+            console.log("n="+n);
+            diferencia = max - min;
+            console.log("diferencia="+diferencia);
+            n1 = Math.floor(n * diferencia);
+            console.log("n1="+n1);
+            nFinal = min + n1;
+            console.log("nFinal="+nFinal);
+            console.log("min="+min+" max="+max);
+            return nFinal;
+        }
+
+        document.write(" \
+            <p>Número aleatorio entre 0 y 1 = " 
+                + 
+                Math.random().toFixed(2));
+        document.write(
+            "<p>Número aleatorio entre 100 y 200 = "
+                + aleatorio(100,200));
+        minimo = prompt (
+          "Introduce un mínimo para número aleatorio: ");
+        maximo = prompt (
+          "Introduce un máximo para número aleatorio: ");
+        document.write(
+            "<p>Número aleatorio entre "
+                + minimo + " y " + maximo + " = "
+                + aleatorio(Number(minimo),Number(maximo))
+        );
+    </script>
+</body>
+</html>

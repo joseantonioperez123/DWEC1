@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["script/**/*.ts", "svgo.config.mts", "tests/**/*.ts", "vitest.config.mts"],
+  "exclude": ["eslint.config.mjs", "prettier.config.js"]
+}

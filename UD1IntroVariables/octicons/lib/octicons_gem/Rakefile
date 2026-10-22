@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+require "json"
+require "rake/testtask"
+require "rubocop/rake_task"
+require "bundler/gem_tasks"
+
+RuboCop::RakeTask.new(:lint) do |t|
+  t.options = ["--display-cop-names"]
+end
+
+Rake::TestTask.new do |t|
+  t.libs = ["lib", "test"]
+  t.test_files = FileList["test/*_test.rb"]
+end
+
+task :version do
+  version = JSON.parse(File.read(File.expand_path("package.json", __dir__))).fetch("version")
+  version = version.sub(/\A0\.0\.0./, "0.0.0.pre.").sub("-rc", ".pre")
+
+  out = "# frozen_string_literal: true\n\nmodule Octicons\n"\
+    "  VERSION = \"#{version}\".freeze\n"\
+    "end"
+  File.open(File.expand_path("../lib/octicons/version.rb", __FILE__), "w") { |file| file.puts out }
+
+  gemfile_path = File.expand_path("../Gemfile", __FILE__)
+  gemfile = File.read(gemfile_path)
+  File.write(gemfile_path, gemfile.gsub(/gem "octicons", "[^"]+"/, "gem \"octicons\", \"#{version}\""))
+end
+
+desc "Run tests"
+task default: :test

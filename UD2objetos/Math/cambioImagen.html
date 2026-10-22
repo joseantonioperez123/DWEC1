@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img id="foto" src="" alt="">
+    <script>
+        animales = ["vaca.jpg","llama.jpg","panda.jpg"];
+        aleatorio = Math.floor(Math.random()*3);
+        console.log(aleatorio);
+        imagen = animales[aleatorio];
+        imagen = "animales/"+imagen;
+        cuadro = document.getElementById("foto");
+        cuadro.src = imagen;
+    </script>
+</body>
+</html>

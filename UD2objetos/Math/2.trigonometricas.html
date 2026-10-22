@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funciones trigonométricas</title>
+    <style>
+        #seno {
+            background-color: aquamarine;
+        }
+        #senode {
+            background-color: brown;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cálculos trigonométricos</h1>
+    <p>El seno de <span id="seno"></span> es <span id="senode"></span></p>
+    <p>El coseno de <span id="coseno"></span> es <span id="cosenode"></span></p>
+    <script>
+        function grados_radianes(grados) {
+            return grados * Math.PI / 180.0;
+        }
+        let grados = Number(prompt("Introduce un ángulo: "));
+        document.getElementById("seno").innerHTML = grados;
+        console.log(grados);
+        //const gradosARadianes = (grados) => (grados * Math.PI) / 180.0;
+        //console.log(gradosARadianes);
+        //console.log(grados_radianes);
+        document.getElementById("senode").innerHTML = +
+            Math.sin(grados_radianes(grados));
+        //document.write("El seno de "+n+" es "+Math.sin(n));
+        document.getElementById("coseno").innerHTML = grados;
+        document.getElementById("cosenode").innerHTML = +
+            Math.cos(grados_radianes(grados));
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar datos de fecha</title>
+
+</head>
+<body>
+    <div id="anio"></div>
+    <div id="mes"></div>
+    <div id="dia"></div>
+    <div id="hora"></div>
+    <div id="minutos"></div>
+    <div id="segundos"></div>
+
+    <script>
+        const fecha = new Date();
+
+        document.getElementById("anio").innerHTML = fecha.getFullYear();
+        document.getElementById("mes").innerHTML = fecha.getMonth();
+        document.getElementById("dia").innerHTML = fecha.getDay();
+        document.getElementById("hora").innerHTML = fecha.getHours();
+        document.getElementById("minutos").innerHTML = fecha.getMinutes();
+        document.getElementById("segundos").innerHTML = fecha.getSeconds();
+/*        console.log(date.getDay());      // 1 (Lunes)
+        console.log(date.getDate());     // 13 
+        console.log(date.getMonth());    // 2 (Marzo)
+        console.log(date.getHours());    // 12
+        console.log(date.getMinutes());  // 40
+        console.log(date.getSeconds());  // 51
+        console.log(date.getFullYear()); // 2023
+        console.log(date.getTime());     // 1678722750962
+*/
+    </script>
+</body>
+</html>

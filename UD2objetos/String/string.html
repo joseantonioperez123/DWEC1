@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relación de ejercicios STRING</title>
+</head>
+<body>
+    <script>
+        /* 1.a Invierte una cadena pasada como argumento */
+        function invierteCadena(cadena_arg) {
+            let resultado = "";
+            for (let i=cadena_arg.length; i>=0; i--)
+                resultado += cadena_arg.charAt(i);
+            return resultado;
+        }
+
+        /* 1.b Invierte las palabras de una frase */
+        function inviertePalabras(cadena_arg) {
+            let resultado = "";
+            //let palabras = cadena_arg.trimStart();
+            //palabras = palabras.trimEnd();
+            let palabras = cadena_arg.trim();
+            console.log("/"+palabras+"/");
+            palabrasArray = palabras.split(" ");
+            console.log(palabrasArray);
+            for (let i=palabrasArray.length-1; i>=0 ; i--) {
+                console.log(palabrasArray[i].length);
+                if (palabrasArray[i].length != 0 ) {
+                    console.log(palabrasArray[i]);
+                    resultado += palabrasArray[i];
+                }
+                ( i != 0) ? resultado += " " : null ;
+            }
+            return resultado;
+        }
+
+        /* 1.c encontrar la palabra más larga */
+        function encuentraPalabraMasLarga ( cadena_arg ) {
+            let long = 0;
+            let pala = "";
+            let palabrasArray = cadena_arg.split(" ");
+            for ( let i = 0; i < palabrasArray.length; i++ ) {
+                if ( palabrasArray[i].length > long ) {
+                    long = palabrasArray[i].length;
+                    pala = palabrasArray[i];
+                }
+            }
+            return {
+                palabra: pala,
+                longitud: long
+            }
+        }
+        /* 2. devuelve si es todo mayúsculas, todo minúsculas o mezcla */
+        function mayus_minus(cadena_arg) {
+            let mayusculas = 0;
+            let minusculas = 0;
+            for (let i=0; i<cadena_arg.length; i++) {
+                if (/[A-Z]/.test(cadena_arg.charAt(i)) ) mayusculas++;
+                else minusculas++;
+            }
+            return { mayúsculas: mayusculas, minúsculas: minusculas};
+        }
+
+        /* 4. colocar consonantes al principio y vocales al final */
+        function separa_consonantes_vocales(cadena_arg) {
+            let vocales = "aeiou";
+            let resultConsonantes = "";
+            let resultVocales = "";
+            for (let i=0; i < cadena_arg.length ; i++ ) {
+                if ( vocales.includes(cadena_arg.charAt(i)) )
+                    resultVocales += cadena_arg.charAt(i);
+                else
+                    resultConsonantes += cadena_arg.charAt(i);
+            }
+            return resultConsonantes + resultVocales;
+        }
+
+        /* Cadena de trabajo */
+        let cadena = "    Hola    Mundo    del    Jorge    Guillén!!    ";
+
+        // Invertir cadena
+        let cadena_invertida = invierteCadena(cadena);
+        console.log(cadena+ " al revés es: "+cadena_invertida);
+
+        // Invertir las palabras de la cadena
+        let palabras_invertidas = inviertePalabras(cadena);
+        console.log("Palabras invertidas: '"+palabras_invertidas+"'");
+
+        // Encontrar la palabra más larga
+        let palabraLarga = encuentraPalabraMasLarga ( cadena );
+        console.log(palabraLarga);
+        
+        // poner consonantes al principio y vocales al final
+        let separadas = separa_consonantes_vocales(cadena);
+        console.log(separadas);
+
+        // Indicar si todo son mayúsculas, minúsculas o mezcla de ambas
+        let Mm = mayus_minus(cadena);
+        console.log(Mm);
+        if (Mm.mayúsculas==0)
+            console.log("Todo es minúsculas");
+        else if (Mm.minúsculas==0)
+            console.log("Todo es mayúsculas");
+        else
+            console.log("Hay mezcla de mayúsculas y minúsculas");
+            
+            
+        
+    </script>
+</body>
+</html>
