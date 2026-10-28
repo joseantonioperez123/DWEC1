@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Object Model</title>
+    <style>
+        #mi-barra-estado {
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%;
+            background-color: #f1f1f1;
+            padding: 5px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <button id="abrirPagina">
+        Abrir Jorge Guillén
+    </button>
+    <p id="infoVentana"></p>
+    <div id="mi-barra-estado">
+                Listo
+    </div>
+    <script>
+        /*let respuesta = confirm("Aceptar?:");
+        if ( respuesta ) 
+            alert("Has pulsado ACEPTAR");
+        else
+            alert("Has pulsado CANCELAR");
+        */
+        // abrir una nueva ventana
+        let ventana;
+        let estado = document.getElementById("mi-barra-estado");
+        btn = document.getElementById("abrirPagina").addEventListener (
+            "click", function () {
+                if ( ventana == undefined ) {
+                    ventana = window.open("https://www.iesjorgeguillen.es","IES");
+                    estado.innerHTML = "VENTANA ABIERTA";
+                    btn1 = document.getElementById("abrirPagina");
+                    btn1.innerHTML = "CERRAR VENTANA";
+                }
+                else {
+                    estado.innerHTML = "VENTANA CERRADA";
+                    btn1 = document.getElementById("abrirPagina");
+                    btn1.innerHTML = "ABRIR VENTANA";
+                    ventana.close();
+                    ventana = undefined;
+                }
+            }
+        );
+
+        function comprobarVentana() {
+            let p = document.getElementById("infoVentana");
+            if ( ventana != undefined )
+                if ( ventana.closed ) {
+                    //p.innerHTML = "Se ha cerrado la ventana";
+                    estado.innerHTML = "VENTANA CERRADA";
+                }
+        }
+
+        setInterval(comprobarVentana, 1000);
+    </script>
+</body>
+</html>

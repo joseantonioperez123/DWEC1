@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de estado simulada</title>
+    <style>
+        body {
+            /* si hay scroll vertical el contenido y la 
+               barra de estado no se solapan */
+            padding-bottom: 40px;
+        }
+
+        #principal {
+            display: flex;
+            flex-direction: column;
+        }
+        #cabecera {
+            flex: 1;
+            min-height: 150px;
+        }
+        main {
+            flex: 1;
+            /*height: auto;*/}
+        footer {
+            flex: 80px;
+            /*height: 80px;*/
+        }
+        #mi-barra-estado {
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%;
+            background-color: #f1f1f1;
+            padding: 5px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="principal">
+        <header>
+            <div id="cabecera"><h1>Status Bar</h1></div>
+        </header>
+        <main>
+            <div>
+                <h2>Contenido principal</h2>
+            </div>
+        </main>
+        <footer>
+            <div id="mi-barra-estado">
+                Listo
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

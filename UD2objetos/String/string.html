@@ -76,8 +76,40 @@
             return resultConsonantes + resultVocales;
         }
 
+        /* 5. eliminar caracteres repetidos */
+        function elemina_caracteres_repetidos(cadena_arg) {
+            let cadena_final = "";
+
+            for ( let i=0; i<cadena_arg.length; i++) {
+                let caracter = cadena_arg.charAt(i);
+                if ( ! cadena_final.includes( caracter ) )
+                    cadena_final += caracter;
+            }
+            return cadena_final;
+        }
+
+        /* 5.a deja sólo caracteres no repetidos */
+
+        /* 9. escribir cadena formando un cuadro */
+        function cuadro ( cadena_arg ) {
+            document.write("<table><tr>")
+            for ( let i=0; i<cadena_arg.length; i++)
+                document.write("<td>"+cadena_arg.charAt(i)+"</td>");
+            document.write("</tr>");
+            let espacios = cadena_arg.length - 2;
+            for ( let i=1; i<cadena_arg.length-1; i++)
+                document.write("<tr><td>"+cadena_arg[i]+
+                    "</td><td colspan='"+espacios+"'></td><td>"+
+                    cadena_arg[cadena_arg.length - i - 1] + "</td></tr>");
+            document.write("<tr>");
+            let cadena_invertida = invierteCadena(cadena_arg);
+            for ( let i=0; i<cadena_invertida.length; i++)
+                document.write("<td>"+cadena_invertida.charAt(i)+"</td>")            
+            document.write("</tr></table>");
+        }
+
         /* Cadena de trabajo */
-        let cadena = "    Hola    Mundo    del    Jorge    Guillén!!    ";
+        let cadena = "Hola    Mundo    del    Jorge    Guillén!!";
 
         // Invertir cadena
         let cadena_invertida = invierteCadena(cadena);
@@ -105,8 +137,12 @@
         else
             console.log("Hay mezcla de mayúsculas y minúsculas");
             
-            
+        // 5. eliminar caracteres repetidos
+        let sin_repetir = elemina_caracteres_repetidos ( cadena );
+        console.log("Sin caracteres repetidos= " + sin_repetir);
         
+        // 9. formatear en cuadrado
+        cuadro(cadena);
     </script>
 </body>
 </html>
