@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll, foco, visible</title>
+    <style>
+        #principal {
+            height: 2000px;
+            max-width: 500px;
+        }
+        .parrafo {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="principal">
+        <button onclick="irAPlantas();">Plantas</button>
+        <h3>CONTENIDO DE MI PÁGINA</h3>
+        <p class="parrafo">Aves</p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni id minima eaque harum architecto officiis aspernatur quas quis repellendus, officia obcaecati corporis voluptate facilis qui quos similique, alias sed. Architecto beatae nulla adipisci itaque quia, quam optio ea eaque cum tenetur rerum. Nam quod illo sint eos nulla saepe iure.
+        <p class="parrafo">Mamíferos</p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod recusandae, voluptas eius possimus voluptatum beatae facere quia nesciunt sunt earum et laudantium consequatur, totam aliquid fugit! Beatae tempore eveniet sit quia, pariatur atque iure eum aspernatur cum velit expedita praesentium repudiandae. Ipsam reiciendis, saepe natus molestias dolores impedit, necessitatibus eaque aut, inventore quod exercitationem dolore minima laborum deserunt pariatur! Nulla fuga, consequatur voluptate laudantium aperiam, accusantium illo enim voluptates ab dolorem magnam quia. Voluptatibus nulla veritatis exercitationem maiores, ex dolores corporis suscipit. Nulla, dicta. Nobis, officia! Porro doloremque minus molestiae omnis, illo doloribus architecto obcaecati, non explicabo, consectetur expedita quo.
+        <p class="parrafo">Reptiles</p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias autem non, doloribus, quasi quia saepe fugit hic deserunt, recusandae sed dicta veniam sunt amet. Mollitia aliquam sapiente ipsum alias fugiat deleniti sequi, veritatis error nobis vel. Deserunt quidem obcaecati, non eligendi totam asperiores quos voluptas officia vitae magni necessitatibus ipsum, esse, ab tenetur quis. Accusamus ipsam dolorum, consequuntur, cumque quas fuga temporibus maiores esse dolorem at asperiores fugit vel unde ad nostrum natus! Nobis dolores perferendis consequuntur facere maxime. Ex consequatur corporis consectetur, itaque temporibus distinctio dolorum nemo totam optio?
+        <p class="parrafo" id="Plantas">Plantas</p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, veniam ut voluptas minus velit dolor provident eaque vero vel ipsam aut! Nemo voluptas maxime quibusdam. Perspiciatis, tenetur. Maxime, inventore. Quaerat debitis, corrupti eos itaque dicta dignissimos quisquam pariatur iusto earum.
+        <p class="parrafo">Minerales</p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur doloremque libero atque, illo harum, iusto, quia commodi voluptatibus numquam culpa natus nobis labore. Iure optio magni aliquam minima ut laboriosam numquam ab voluptatem saepe fugiat, accusantium corrupti minus? Rem ullam voluptates deserunt minima adipisci architecto modi sit ea quis ab aspernatur amet asperiores illo quidem, non ipsam accusamus dolores quasi, suscipit dolore odit? Ullam necessitatibus voluptatibus sit itaque quos dignissimos!
+    </div>
+
+    <script>
+        function irAPlantas() {
+            //window.scrollTo(0,800);
+            /*window.scrollTo({ top: 800,
+                                left:0,
+                                behavior: 'smooth'
+            });*/
+            const plantas = document.getElementById("Plantas");
+            plantas.scrollIntoView({    behavior: 'smooth',
+                                        block: 'start'
+                                    });
+        }
+        document.write('');
+        console.log('');
+        
+    </script>
+</body>
+</html>

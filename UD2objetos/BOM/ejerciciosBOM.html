@@ -17,9 +17,18 @@
     </style>
 </head>
 <body>
-    <button id="abrirPagina">
-        Abrir Jorge Guillén
-    </button>
+    <div>
+        <button id="abrirPagina">
+            Abrir Jorge Guillén
+        </button>
+        <button id="abrirBOMhijo">
+            Abrir BOMhijo.html
+        </button>
+    </div>
+    <div>
+        <button id="llamarHijo">Mensaje a hijo</button>
+        <button id="irAHijo">Volver a ventana hija</button>
+    </div>
     <p id="infoVentana"></p>
     <div id="mi-barra-estado">
                 Listo
@@ -58,10 +67,42 @@
                 if ( ventana.closed ) {
                     //p.innerHTML = "Se ha cerrado la ventana";
                     estado.innerHTML = "VENTANA CERRADA";
+                                        estado.innerHTML = "VENTANA CERRADA";
+                    btn1 = document.getElementById("abrirPagina");
+                    btn1.innerHTML = "ABRIR VENTANA";
+                    ventana = undefined;
                 }
         }
 
-        setInterval(comprobarVentana, 1000);
+        setInterval(comprobarVentana, 500);
+
+        // Comunicación entre ventana padre e hija
+        btnHijo = document.getElementById("abrirBOMhijo");
+        btnHijo.addEventListener("click", abreHijo);
+        let ventanaHija;
+        function abreHijo() {
+            //ventanaHija = window.open("BOMhijo.html", "VentanaHija", "width=400,height=300");
+            ventanaHija = window.open("BOMhijo.html", "VentanaHija");
+        }
+        
+        function enElPadre(mensaje)
+        {
+            console.log(mensaje);
+            
+        }
+        btnLlamarHijo = document.getElementById("llamarHijo");
+        btnLlamarHijo.addEventListener("click", llamarHijo);
+        function llamarHijo() {
+            if ( ventanaHija && !ventanaHija.closed )
+                ventanaHija.enElHijo("Mensaje desde el padre", 6);
+            else
+                alert("La ventana hija no está abierta");
+        }
+        btnIaAHijo = document.getElementById("irAHijo");
+        btnIaAHijo.addEventListener("click", () => {
+            if ( ventanaHija && !ventanaHija.closed )
+                ventanaHija.focus();
+        });
     </script>
 </body>
 </html>

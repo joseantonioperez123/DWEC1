@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventana hija</title>
+</head>
+<body>
+    <h3>Ventana abierta desde ejerciciosBOM.html</h3>
+    <button onclick="mensajearPadre()">Enviar Resultado a Ventana Padre</button>
+    <button onclick="focoPadre()">Volver a la ventana padre</button>
+    <input type="text" id="valor">
+    <p id="mensajePadre"></p>
+    <p id="numero"></p>
+    <p id="reloj"></p>
+
+    <script>
+        function mensajearPadre() {
+            if ( window.opener &&  !window.opener.closed ) {
+                txt = document.getElementById("valor").value;
+                window.opener.enElPadre(txt);
+            } else {
+                alert("No hay ventana padre");
+            }
+        }
+
+        function enElHijo(mensaje, numero) {
+            let m = document.getElementById("mensajePadre");
+            let num = document.getElementById("numero");
+            
+            m.innerHTML = mensaje;
+            num.innerHTML = numero;
+        }
+
+        function focoPadre() {
+            if ( window.opener && !window.opener.closed ) {
+                console.log("Devolver el foco");
+                window.opener.focus();
+            }
+        }
+
+        let mostrar = true;
+        let reloj=document.getElementById("reloj");
+        function hora() {
+            if ( mostrar )
+                reloj.innerHTML = Date();
+        }
+        setInterval(hora, 1000);
+
+        document.addEventListener('visibilitychange', () => {
+            if ( document.hidden ) {
+                mostrar = false;
+                console.log("La página está en segundo plano");
+            } else {
+                mostrar = true;
+            }
+
+
+        });
+    </script>
+</body>
+</html>
