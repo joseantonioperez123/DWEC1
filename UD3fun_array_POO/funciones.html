@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UD3. Ejemplos de funciones</title>
+</head>
+<body>
+    <script>
+        /**************************
+        // paso de función como parámetro
+        ***************************/
+        function cubo_array ( f, a ) {
+            const result = new Array(a.length);
+            for (let i = 0; i < a.length; i++) {
+                result[i] = f(a[i]);
+            }
+            return result;
+        }
+
+        const numbers = [0, 1, 2, 5, 10];
+        console.log(numbers);
+
+        // para calcular el cubo de los elementos del array le pasamos la función que calcula el cubo
+        // con función flecha
+        const cubedNumbers = cubo_array ( (x) => { return x * x * x; }, numbers);
+        // con función anónima
+/*        const cubedNumbers = cubo_array (function (x) {
+                return x * x * x;
+        }, numbers);*/
+
+        console.log(cubedNumbers); // [0, 1, 8, 125, 1000]
+
+        /**************************
+        // podemos pasar un número indeterminado de parámetros y accedemos a ellos con el array arguments
+        ***************************/
+        function myConcat(separator) {
+            let result = ""; // initialize list
+            // iterate through arguments
+            for (let i = 1; i < arguments.length; i++) {
+                result += arguments[i] + separator;
+            }
+            return result;
+        }
+
+        console.log(myConcat(", ", "red", "orange", "blue"));
+        // "red, orange, blue, "
+        console.log(myConcat("; ", "elephant", "giraffe", "lion", "cheetah"));
+        // "elephant; giraffe; lion; cheetah; "
+        console.log(myConcat(". ", "sage", "basil", "oregano", "pepper", "parsley"));
+        // "sage. basil. oregano. pepper. parsley. "
+
+        /**************************
+        // podemos obtener los "últimos" parámetros en un array (resto),
+        // todos los que no se han puesto expresamente como multiplicador1 y multiplicador2
+        ***************************/
+        function multiplica(multiplicador1, multiplicador2, ...resto) {
+            return resto.map((x) => multiplicador1 * multiplicador2 * x);
+        }
+
+        const arr = multiplica(2, 8, 1, 2, 3);
+        console.log(arr); // [16, 32, 48]
+
+    </script>
+</body>
+</html>
