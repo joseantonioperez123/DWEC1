@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkanoid en JavaScript</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #1a1a2e;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            letter-spacing: 3px;
+            color: #e94560;
+        }
+
+        canvas {
+            border: 4px solid #4ecc71;
+            background-color: #161623;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+        }
+
+        .info {
+            margin-top: 15px;
+            color: #848ccf;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ARKANOID</h1>
+    <canvas id="arkanoidCanvas" width="600" height="450"></canvas>
+    
+    <div class="info">
+        Usa las **Flechas Izquierda / Derecha** (o las teclas **A / D**) para moverte.
+    </div>
+
+    <script>
+        const canvas = document.getElementById("arkanoidCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // --- Configuración de la Pala ---
+        const paddleWidth = 90;
+        const paddleHeight = 15;
+        let paddleX = (canvas.width - paddleWidth) / 2;
+        const paddleY = canvas.height - 30;
+        const paddleSpeed = 8;
+
+        // --- Configuración de la Pelota ---
+        const ballRadius = 7;
+        let ballX = canvas.width / 2;
+        let ballY = paddleY - ballRadius - 5;
+        let ballSpeedX = 4;
+        let ballSpeedY = -4;
+        let gameStarted = false;
+
+        // --- Configuración de los Bloques ---
+        const blockRows = 5;
+        const blockCols = 8;
+        const blockWidth = 63;
+        const blockHeight = 20;
+        const blockPadding = 7;
+        const blockOffsetTop = 50;
+        const blockOffsetLeft = 25;
+        
+        // Colores para las filas de bloques (estilo retro)
+        const rowColors = ["#e94560", "#ff6b6b", "#feca57", "#1dd1a1", "#54a0ff"];
+
+        let blocks = [];
+        let score = 0;
+        let lives = 3;
+
+        // Inicializar matriz de bloques
+        function initBlocks() {
+            blocks = [];
+            for (let r = 0; r < blockRows; r++) {
+                blocks[r] = [];
+                for (let c = 0; c < blockCols; c++) {
+                    blocks[r][c] = { x: 0, y: 0, status: 1 }; // status 1 = vivo, 0 = destruido
+                }
+            }
+        }
+
+        // --- Controles ---
+        const keys = {};
+        window.addEventListener("keydown", e => {
+            keys[e.code] = true;
+            if (e.code === "Space") gameStarted = true; // Espacio para sacar la pelota
+        });
+        window.addEventListener("keyup", e => keys[e.code] = false);
+
+        // --- Lógica del juego ---
+        function update() {
+            // Movimiento de la pala
+            if ((keys["ArrowLeft"] || keys["KeyA"]) && paddleX > 0) {
+                paddleX -= paddleSpeed;
+            }
+            if ((keys["ArrowRight"] || keys["KeyD"]) && paddleX < canvas.width - paddleWidth) {
+                paddleX += paddleSpeed;
+            }
+
+            // Si el juego no ha empezado, la pelota se queda pegada a la pala
+            if (!gameStarted) {
+                ballX = paddleX + paddleWidth / 2;
+                ballY = paddleY - ballRadius;
+                return;
+            }
+
+            // Movimiento de la pelota
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Colisión con paredes laterales
+            if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
+                ballSpeedX = -ballSpeedX;
+            }
+
+            // Colisión con el techo
+            if (ballY - ballRadius < 0) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            // Colisión con el suelo (Pérdida de vida)
+            if (ballY + ballRadius > canvas.height) {
+                lives--;
+                if (lives <= 0) {
+                    alert("¡GAME OVER! Puntuación: " + score);
+                    document.location.reload();
+                } else {
+                    // Reiniciar posición de pala y pelota
+                    gameStarted = false;
+                    paddleX = (canvas.width - paddleWidth) / 2;
+                }
+            }
+
+            // Colisión con la pala
+            if (ballY + ballRadius >= paddleY && ballY - ballRadius <= paddleY + paddleHeight) {
+                if (ballX >= paddleX && ballX <= paddleX + paddleWidth) {
+                    // Lógica física avanzada: El ángulo cambia según dónde golpee la pelota en la pala
+                    let hitPoint = (ballX - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
+                    ballSpeedX = hitPoint * 5; 
+                    ballSpeedY = -Math.abs(ballSpeedY); // Asegurar que rebota hacia arriba
+                }
+            }
+
+            // Colisión con los bloques
+            let allDestroyed = true;
+            for (let r = 0; r < blockRows; r++) {
+                for (let c = 0; c < blockCols; c++) {
+                    let b = blocks[r][c];
+                    if (b.status === 1) {
+                        allDestroyed = false; // Aún quedan bloques
+                        
+                        // Comprobar si la pelota entra en el rectángulo del bloque
+                        if (ballX + ballRadius > b.x && ballX - ballRadius < b.x + blockWidth &&
+                            ballY + ballRadius > b.y && ballY - ballRadius < b.y + blockHeight) {
+                            
+                            ballSpeedY = -ballSpeedY; // Rebota verticalmente
+                            b.status = 0;             // Destruir bloque
+                            score += 10;
+                        }
+                    }
+                }
+            }
+
+            // Si rompes todos los bloques, pasas al siguiente nivel (se regeneran)
+            if (allDestroyed) {
+                initBlocks();
+                gameStarted = false;
+                ballSpeedY = -Math.abs(ballSpeedY) * 1.1; // Un poco más rápido cada nivel
+                ballSpeedX *= 1.1;
+            }
+        }
+
+        // --- Dibujo ---
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar bloques
+            for (let r = 0; r < blockRows; r++) {
+                for (let c = 0; c < blockCols; c++) {
+                    if (blocks[r][c].status === 1) {
+                        let blockX = (c * (blockWidth + blockPadding)) + blockOffsetLeft;
+                        let blockY = (r * (blockHeight + blockPadding)) + blockOffsetTop;
+                        blocks[r][c].x = blockX;
+                        blocks[r][c].y = blockY;
+                        
+                        ctx.fillStyle = rowColors[r];
+                        ctx.fillRect(blockX, blockY, blockWidth, blockHeight);
+                        
+                        // Un pequeño borde oscuro para dar relieve
+                        ctx.strokeStyle = "#161623";
+                        ctx.strokeRect(blockX, blockY, blockWidth, blockHeight);
+                    }
+                }
+            }
+
+            // Dibujar Pala
+            ctx.fillStyle = "#4ecc71";
+            ctx.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);
+
+            // Dibujar Pelota
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.closePath();
+
+            // Dibujar Interfaz (Marcador y Vidas)
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "16px Arial";
+            ctx.fillText("Puntos: " + score, 20, 25);
+            ctx.fillText("Vidas: " + "❤️".repeat(lives), canvas.width - 100, 25);
+
+            // Mensaje inicial
+            if (!gameStarted) {
+                ctx.fillStyle = "rgba(255,255,255,0.6)";
+                ctx.font = "18px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText("Presiona ESPACIO o muévete para lanzar la pelota", canvas.width / 2, canvas.height / 2 + 50);
+                ctx.textAlign = "left"; // Resetear alineación
+            }
+        }
+
+        // --- Bucle Principal ---
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Iniciar
+        initBlocks();
+        gameLoop();
+    </script>
+</body>
+</html>
