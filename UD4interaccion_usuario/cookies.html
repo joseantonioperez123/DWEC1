@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manejo de cookies</title>
+</head>
+<body>
+    <h3>Mira la consola de desarrollador para ver los resultados</h3>
+    <div id="introUsuario">
+        <input type="text" name="usuario" id="usuario">
+        <label for="usuario">Tu nombre aquí, pls: </label>
+        <button onclick="guardaUsuario();">Guardar</button>
+    </div>
+    <button onclick="borrarUsuario();">Borrar usuario</button>
+    <p id="bienvenida"></p>
+    <p id="visitas"></p>
+    <script>
+        // función para obtener una cookie. Copiada de W3School
+        function obtenerCookie ( nombreCookie ) {
+            let name = nombreCookie + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        // guarda una cookie y su valor, expira en exdays días
+        function establecerCookie(cookieName, cookieValue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+        }
+
+        // comprueba si la cookie existe y tiene valor
+        function comprobarCookie(cookieName) {
+            let galleta = obtenerCookie(cookieName);
+            if (galleta != "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+/*******************************************/
+        // 1. crear una cookie
+        document.cookie = "nombre=José;";
+        console.log(document.cookie);
+        // 2. añadir varias cookies
+        document.cookie = "localidad=Torrox";
+        document.cookie = "aficiones=tenis";
+        console.log(document.cookie);
+        // 3. modificar el valor de una cookie
+        document.cookie = "nombre=Ana Fernanda;";
+        console.log(document.cookie);
+        // 4. cerrar la ventana y comprobar al abrir que siguen estando las cookies
+        // 5. obtener el valor de la cookie nombre
+        console.log(obtenerCookie("nombre"));
+        // 6. crear una función para obtener valor de una cookie (W3Schools)
+/*******************************************/
+
+        // muestra texto de bienvenida pasado como parámetro
+        function darBienvenida(texto) {
+            let bienvenida=document.getElementById("bienvenida");
+            // con innerHTML podríamos poner etiquetas HTML y serían interpretadas por el navegador
+            bienvenida.innerHTML = texto;
+        }
+
+        // pone visible o no el campo para introducir usuario
+        function usuarioVisible(siNo) {
+            let usuario=document.getElementById("introUsuario");
+            if (siNo)
+                usuario.style.display="block";
+            else
+                usuario.style.display="none";
+        }
+
+        // 8. mostrar bienvenida si existe usuario en cookies o "no conozco tu nombre de usuario"
+        if ( comprobarCookie("usuario") ) {
+            let texto = "Bienvenido de nuevo "+obtenerCookie("usuario")+"!";
+            darBienvenida(texto);
+            usuarioVisible(false);
+        }
+        else {
+            darBienvenida("No conozco tu nombre de usuario");
+            usuarioVisible(true);
+        }
+
+        // 7. guardar en una cookie el nombre de usuario introducido en un textbox
+        function guardaUsuario() {
+            let usuario=document.getElementById("usuario").value;
+            establecerCookie("usuario",usuario,10); //expira en 10 días
+            darBienvenida("Hola " + usuario + "!");
+            usuarioVisible(false);
+        }
+
+        // 10. borrar cookie usuario
+        function borrarUsuario() {
+            let usuario=document.getElementById("usuario").value;
+            // al pone que expira en 0 días, se borra la cookie al establecerla
+            establecerCookie("usuario", usuario, 0);
+            usuarioVisible(true);
+            darBienvenida("No conozco tu nombre de usuario");
+        }
+
+        // 13. contador de visitas
+        if (comprobarCookie("visitas")) {
+            // existe ya la cookie visitas
+            let numVisitas = obtenerCookie("visitas");
+            let nuevaVisita = parseInt(numVisitas);
+            nuevaVisita++;
+            nV = nuevaVisita.toString();
+            establecerCookie("visitas",nV);
+        }
+        else {
+            // no existe visitas, la creamos con valor 1 y expire de 365 días
+            establecerCookie("visitas","1","365");
+            nV = 1;
+        }
+        // muestra el número de visitas
+        let pVisitas = document.getElementById("visitas");
+        pVisitas.innerText = "Esta es tu visita " + nV;
+    </script>
+    
+</body>
+</html>

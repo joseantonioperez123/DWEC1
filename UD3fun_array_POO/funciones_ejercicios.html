@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 1. funciones anónimas y asignación a variables
+        const operacion = function (a, b) {
+            return a * 2 + b;
+        };
+        console.log(operacion(3, 4));
+        console.log(typeof operacion);
+
+        // 2. funciones tradicionales y función flecha
+        function calcular(a, b) {
+            return a + b;
+        }
+        const calcularFlecha = (a, b) => a + b;
+        console.log(calcular(5, 3));
+        console.log(calcularFlecha(5, 3));
+
+        // 3. parámetros por defecto
+        function presentar(nombre = "Invitado", edad = 18) {
+            console.log("Nombre: " + nombre);
+            console.log("Edad: " + edad);
+        }
+        presentar("Laura", 25);
+        presentar("Pedro");
+        presentar();
+        presentar(undefined, 30);
+        presentar(null, 20);
+
+        // 4. objeto arguments
+        function mostrarDatos(a, b) {
+            console.log("Primer parámetro:", a);
+            console.log("Segundo parámetro:", b);
+            console.log("Número de argumentos:", arguments.length);
+            console.log("Tercer argumento:", arguments[2]);
+        }
+        mostrarDatos(10, 20, 30);
+        mostrarDatos(5);
+
+        // 5. parámetro rest (...theRest)
+        function sumar(primerNumero, ...theRest) {
+            let total = primerNumero;
+            for (let numero of theRest) {
+                total += numero;
+            }
+            return total;
+        }
+        console.log(sumar(10));
+        console.log(sumar(10, 20));
+        console.log(sumar(10, 20, 30, 40));
+
+        // 6. Escribir código: función flecha y parámetros por defecto
+/*Escribe una función flecha llamada calcularPrecio que reciba dos parámetros:
+• precio: precio inicial de un producto.
+• descuento: porcentaje de descuento que se aplicará. Su valor por defecto será 0.
+La función debe devolver el precio final después de aplicar el descuento.
+Después, realiza estas llamadas:*/
+//console.log(calcularPrecio(100, 20));
+//console.log(calcularPrecio(50));
+//console.log(calcularPrecio(200, 10));
+
+        // 7. Escribir código: número variable de argumentos
+/*Crea una función llamada obtenerMedia que reciba cualquier número de argumentos mediante
+el parámetro rest ...theRest.
+La función debe:
+a) Calcular la suma de todos los números recibidos.
+b) Calcular la media aritmética.
+c) Devolver el resultado.
+Comprueba su funcionamiento con estas llamadas:*/
+//console.log(obtenerMedia(5, 7, 9));
+//console.log(obtenerMedia(10, 20, 30, 40));
+
+        // 8. Análisis y corrección de código
+        const calcularB = (a, b = 10, ...theRest, c) => {
+            console.log(arguments.length);
+            return a + b + c;
+        };
+        console.log(calcularB(5, 3, 7, 9));
+
+        // 9. Funciones como argumentos
+/* Crea una función llamada ejecutarOperacion que reciba tres parámetros:
+• a: primer número.
+• b: segundo número.
+• operacion: una función que realizará una operación con los dos números.
+La función debe ejecutar operacion(a, b) y devolver el resultado.
+A continuación:
+a) Llama a ejecutarOperacion pasando una función anónima que sume los dos números.
+b) Realiza otra llamada pasando una función flecha que multiplique los números.
+c) Realiza una tercera llamada pasando una función flecha que calcule la potencia del primer
+número elevado al segundo. */
+
+        // 10. 
+  /*      Ejercicio 10. Función flecha con parámetros por defecto
+Escribe una función flecha llamada crearUsuario que reciba tres parámetros:
+• nombre, cuyo valor por defecto será "Anónimo".
+• edad, cuyo valor por defecto será 18.
+• ciudad, cuyo valor por defecto será "Madrid".
+La función debe devolver una cadena con el siguiente formato:
+Usuario: Ana, edad: 25, ciudad: Málaga
+Realiza cuatro llamadas diferentes para comprobar el funcionamiento de los parámetros por defecto,
+omitiendo distintos argumentos.
+Ejercicio 11. Uso de arguments para calcular el máximo
+Escribe una función tradicional llamada obtenerMaximo que pueda recibir cualquier número de
+argumentos.
+La función debe utilizar el objeto arguments para recorrer los valores recibidos y devolver el
+número mayor.
+No puedes utilizar el parámetro rest.
+Comprueba el funcionamiento con estas llamadas:
+console.log(obtenerMaximo(4, 9, 2, 15, 7));
+console.log(obtenerMaximo(25, 12, 8));
+console.log(obtenerMaximo(-5, -2, -10));
+*/
+
+/* Ejercicio 12. Parámetro rest y funciones flecha
+Escribe una función flecha llamada filtrarMayores que reciba:
+• Un primer parámetro limite.
+• Un número indeterminado de valores mediante ...theRest.
+La función debe devolver un nuevo array que contenga únicamente los números mayores que
+limite.
+Ejemplo:
+console.log(filtrarMayores(10, 5, 12, 8, 20, 3, 15));
+Resultado esperado:
+[12, 20, 15]
+Utiliza el método filter() de los arrays */
+
+/* Ejercicio 13. Función anónima asignada a una variable
+Crea una función anónima y asígnala a una constante llamada calcularEstadisticas.
+La función recibirá un número indeterminado de valores mediante ...theRest y deberá devolver
+un objeto con tres propiedades:
+• cantidad: número de valores recibidos.
+• suma: suma de todos los valores.
+• media: media aritmética de los valores.
+Ejemplo:
+const resultado = calcularEstadisticas(10, 20, 30, 40);
+console.log(resultado);
+Resultado esperado:
+{
+ cantidad: 4,
+ suma: 100,
+ media: 25
+}
+La función debe poder trabajar con cualquier cantidad de valores, suponiendo que recibe al menos
+uno.*/
+    </script>
+</body>
+</html>
