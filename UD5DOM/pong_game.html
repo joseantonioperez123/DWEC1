@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clásico Juego de Pong</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #111;
+            color: white;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+
+        /* El tablero del juego */
+        canvas {
+            border: 4px solid white;
+            background-color: black;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .controles {
+            margin-top: 15px;
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>PONG</h1>
+    <canvas id="pongCanvas" width="800" height="400"></canvas>
+    
+    <div class="controles">
+        <strong>Jugador Izquierdo:</strong> Teclas W (Arriba) y S (Abajo)<br>
+        <strong>Jugador Derecho:</strong> Flechas dirección Arriba y Abajo
+    </div>
+
+    <script>
+        const canvas = document.getElementById("pongCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // --- Configuración del juego ---
+        const paddleWidth = 10, paddleHeight = 80;
+        const ballRadius = 8;
+        const paddleSpeed = 7;
+
+        // Puntuaciones
+        let scoreLeft = 0;
+        let scoreRight = 0;
+
+        // Posiciones de las palas (centradas verticalmente al inicio)
+        let leftY = (canvas.height - paddleHeight) / 2;
+        let rightY = (canvas.height - paddleHeight) / 2;
+
+        // Estado de la pelota
+        let ballX = canvas.width / 2;
+        let ballY = canvas.height / 2;
+        let ballSpeedX = 5;
+        let ballSpeedY = 3;
+
+        // Registro de teclas presionadas
+        const keys = {};
+        window.addEventListener("keydown", e => keys[e.code] = true);
+        window.addEventListener("keyup", e => keys[e.code] = false);
+
+        // Reiniciar pelota al centro tras un punto
+        function resetBall(direction) {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            // Envía la pelota hacia el jugador que acaba de recibir el punto, con velocidad base
+            ballSpeedX = direction * 5;
+            ballSpeedY = (Math.random() * 2 - 1) * 4; 
+        }
+
+        // --- Lógica del juego (Actualización de posiciones) ---
+        function update() {
+            // Movimiento pala izquierda (W / S)
+            if (keys["KeyW"] && leftY > 0) leftY -= paddleSpeed;
+            if (keys["KeyS"] && leftY < canvas.height - paddleHeight) leftY += paddleSpeed;
+
+            // Movimiento pala derecha (Flechas)
+            if (keys["ArrowUp"] && rightY > 0) rightY -= paddleSpeed;
+            if (keys["ArrowDown"] && rightY < canvas.height - paddleHeight) rightY += paddleSpeed;
+
+            // Movimiento de la pelota
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Colisión con techo y suelo (rebote)
+            if (ballY - ballRadius < 0 || ballY + ballRadius > canvas.height) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            // Colisión con pala izquierda
+            if (ballX - ballRadius < paddleWidth) {
+                if (ballY > leftY && ballY < leftY + paddleHeight) {
+                    ballSpeedX = -ballSpeedX;
+                    // Aumentar un poco la velocidad para que sea más difícil
+                    ballSpeedX *= 1.05;
+                } else if (ballX < 0) {
+                    scoreRight++;
+                    resetBall(1); // Va hacia la derecha
+                }
+            }
+
+            // Colisión con pala derecha
+            if (ballX + ballRadius > canvas.width - paddleWidth) {
+                if (ballY > rightY && ballY < rightY + paddleHeight) {
+                    ballSpeedX = -ballSpeedX;
+                    ballSpeedX *= 1.05;
+                } else if (ballX > canvas.width) {
+                    scoreLeft++;
+                    resetBall(-1); // Va hacia la izquierda
+                }
+            }
+        }
+
+        // --- Renderizado (Dibujar en pantalla) ---
+        function draw() {
+            // Limpiar pantalla
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Línea central punteada
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]); // Resetear patrón de línea
+
+            // Dibujar marcadores
+            ctx.fillStyle = "white";
+            ctx.font = "48px monospace";
+            ctx.fillText(scoreLeft, canvas.width / 4, 60);
+            ctx.fillText(scoreRight, (canvas.width / 4) * 3 - 30, 60);
+
+            // Pala izquierda
+            ctx.fillRect(0, leftY, paddleWidth, paddleHeight);
+
+            // Pala derecha
+            ctx.fillRect(canvas.width - paddleWidth, rightY, paddleWidth, paddleHeight);
+
+            // Pelota (cuadrada como en el arcade original, o redonda con arc)
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
+
+        // --- Bucle principal ---
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop); // Sincroniza con los hercios del monitor
+        }
+
+        // Iniciar el juego
+        gameLoop();
+    </script>
+</body>
+</html>
