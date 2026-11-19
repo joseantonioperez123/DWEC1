@@ -11,27 +11,27 @@
         const operacion = function (a, b) {
             return a * 2 + b;
         };
-        console.log(operacion(3, 4));
-        console.log(typeof operacion);
+        console.log(operacion(3, 4)); // 10
+        console.log(typeof operacion); // function
 
         // 2. funciones tradicionales y función flecha
         function calcular(a, b) {
             return a + b;
         }
         const calcularFlecha = (a, b) => a + b;
-        console.log(calcular(5, 3));
-        console.log(calcularFlecha(5, 3));
+        console.log(calcular(5, 3)); // 8
+        console.log(calcularFlecha(5, 3)); // 8
 
         // 3. parámetros por defecto
         function presentar(nombre = "Invitado", edad = 18) {
             console.log("Nombre: " + nombre);
             console.log("Edad: " + edad);
         }
-        presentar("Laura", 25);
-        presentar("Pedro");
-        presentar();
-        presentar(undefined, 30);
-        presentar(null, 20);
+        presentar("Laura", 25); // Laura 25
+        presentar("Pedro");     // Pedro 18
+        presentar();            // Invitado 18
+        presentar(undefined, 30); // Invitado 30
+        presentar(null, 20); // null 20
 
         // 4. objeto arguments
         function mostrarDatos(a, b) {
@@ -40,8 +40,8 @@
             console.log("Número de argumentos:", arguments.length);
             console.log("Tercer argumento:", arguments[2]);
         }
-        mostrarDatos(10, 20, 30);
-        mostrarDatos(5);
+        mostrarDatos(10, 20, 30); // 10 20 3 30
+        mostrarDatos(5);  // 5 undefined 1 undefined
 
         // 5. parámetro rest (...theRest)
         function sumar(primerNumero, ...theRest) {
@@ -51,9 +51,9 @@
             }
             return total;
         }
-        console.log(sumar(10));
-        console.log(sumar(10, 20));
-        console.log(sumar(10, 20, 30, 40));
+        console.log(sumar(10)); // 10
+        console.log(sumar(10, 20)); // 30
+        console.log(sumar(10, 20, 30, 40)); // 100
 
         // 6. Escribir código: función flecha y parámetros por defecto
 /*Escribe una función flecha llamada calcularPrecio que reciba dos parámetros:
@@ -61,9 +61,10 @@
 • descuento: porcentaje de descuento que se aplicará. Su valor por defecto será 0.
 La función debe devolver el precio final después de aplicar el descuento.
 Después, realiza estas llamadas:*/
-//console.log(calcularPrecio(100, 20));
-//console.log(calcularPrecio(50));
-//console.log(calcularPrecio(200, 10));
+        const calcularPrecio = (a, b = 0) => a - (a*b/100);
+        console.log(calcularPrecio(100, 20));
+        console.log(calcularPrecio(50));
+        console.log(calcularPrecio(200, 10));
 
         // 7. Escribir código: número variable de argumentos
 /*Crea una función llamada obtenerMedia que reciba cualquier número de argumentos mediante
@@ -73,13 +74,25 @@ a) Calcular la suma de todos los números recibidos.
 b) Calcular la media aritmética.
 c) Devolver el resultado.
 Comprueba su funcionamiento con estas llamadas:*/
-//console.log(obtenerMedia(5, 7, 9));
-//console.log(obtenerMedia(10, 20, 30, 40));
+        function obtenerMedia( ...todos ) {
+            let suma=0;
+            for (let i=0; i<todos.length; i++) 
+                suma += todos[i];
+            return suma / todos.length;
+        }
+        console.log(obtenerMedia(5, 7, 9));
+        console.log(obtenerMedia(10, 20, 30, 40));
 
-        // 8. Análisis y corrección de código
-        const calcularB = (a, b = 10, ...theRest, c) => {
+        // 8. Análisis y corrección de código. theRest debe ser el último parámetro
+        /*const calcularB = (a, b = 10, ...theRest, c) => {
             console.log(arguments.length);
             return a + b + c;
+        };*/
+        const calcularB = (a, b = 10, ...theRest) => {
+            let suma = a + b;
+            for (let i=0; i<theRest.length; i++) 
+                suma += theRest[i];
+            return suma;
         };
         console.log(calcularB(5, 3, 7, 9));
 
@@ -94,7 +107,14 @@ a) Llama a ejecutarOperacion pasando una función anónima que sume los dos núm
 b) Realiza otra llamada pasando una función flecha que multiplique los números.
 c) Realiza una tercera llamada pasando una función flecha que calcule la potencia del primer
 número elevado al segundo. */
-
+        function ejecutarOperacion (a, b, f) {
+            return f(a,b);
+        }
+        const suma = (a,b) => a + b;
+        const multiplica = (a,b) => a * b;
+        console.log(ejecutarOperacion(3,4,suma));
+        console.log(ejecutarOperacion(3,4,multiplica));
+        
         // 10. 
   /*      Ejercicio 10. Función flecha con parámetros por defecto
 Escribe una función flecha llamada crearUsuario que reciba tres parámetros:
@@ -104,7 +124,12 @@ Escribe una función flecha llamada crearUsuario que reciba tres parámetros:
 La función debe devolver una cadena con el siguiente formato:
 Usuario: Ana, edad: 25, ciudad: Málaga
 Realiza cuatro llamadas diferentes para comprobar el funcionamiento de los parámetros por defecto,
-omitiendo distintos argumentos.
+omitiendo distintos argumentos.*/
+        const crearUsuario=
+            (nombre="Anónimo",edad=18,ciudad="Madrid") =>
+            "Nombre: "+nombre+", edad: "+edad+", ciudad: "+ciudad;
+
+/*
 Ejercicio 11. Uso de arguments para calcular el máximo
 Escribe una función tradicional llamada obtenerMaximo que pueda recibir cualquier número de
 argumentos.
@@ -112,10 +137,18 @@ La función debe utilizar el objeto arguments para recorrer los valores recibido
 número mayor.
 No puedes utilizar el parámetro rest.
 Comprueba el funcionamiento con estas llamadas:
+*/
+function obtenerMaximo () {
+    let mayor = Number.NEGATIVE_INFINITY;
+    for ( let i=0; i<arguments.length;i++)
+        if ( arguments[i] > mayor )
+            mayor = arguments[i];
+    return mayor;
+}
 console.log(obtenerMaximo(4, 9, 2, 15, 7));
 console.log(obtenerMaximo(25, 12, 8));
 console.log(obtenerMaximo(-5, -2, -10));
-*/
+
 
 /* Ejercicio 12. Parámetro rest y funciones flecha
 Escribe una función flecha llamada filtrarMayores que reciba:
@@ -128,6 +161,9 @@ console.log(filtrarMayores(10, 5, 12, 8, 20, 3, 15));
 Resultado esperado:
 [12, 20, 15]
 Utiliza el método filter() de los arrays */
+const filtrarMayores = (limite, ...elResto) => {
+    //elResto.filter
+}
 
 /* Ejercicio 13. Función anónima asignada a una variable
 Crea una función anónima y asígnala a una constante llamada calcularEstadisticas.
@@ -147,6 +183,17 @@ Resultado esperado:
 }
 La función debe poder trabajar con cualquier cantidad de valores, suponiendo que recibe al menos
 uno.*/
+    const calcularEstadisticas = function (...elResto) {
+        if (arguments.length==0)
+            return "No hay argumentos";
+        let num = arguments.length;
+        let suma = 23; let media=98;
+        //let suma = elResto.reduce
+        //let media = elResto.reduce
+        return {cantidad: num, suma: suma, media: media };
+    }
+    const resultado = calcularEstadisticas(10, 20, 30, 40);
+    console.log(resultado);
     </script>
 </body>
 </html>
