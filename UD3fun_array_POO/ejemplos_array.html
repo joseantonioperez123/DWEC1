@@ -102,7 +102,7 @@
         const todosAprobados = arrayNotas.every(nota  => nota >=  5)   // false
         const algunAprobado = arrayNotas.some(nota  => nota >=  5)     // true
 
-        const arrayNotasSubidas = arrayNotas.map(nota  => nota + nota * 10%)
+        const arrayNotasSubidas = arrayNotas.map(nota  => nota + nota * 10 );
 
         const sumaNotas = arrayNotas.reduce((total,nota)  => total +=  nota, 0)    // total = 35.35
 
